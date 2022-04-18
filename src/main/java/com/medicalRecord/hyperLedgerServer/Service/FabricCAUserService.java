@@ -15,6 +15,8 @@ import org.hyperledger.fabric_ca.sdk.RegistrationRequest;
 import org.hyperledger.fabric_ca.sdk.exception.EnrollmentException;
 import org.hyperledger.fabric_ca.sdk.exception.IdentityException;
 import org.hyperledger.fabric_ca.sdk.exception.InvalidArgumentException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.medicalRecord.hyperLedgerServer.Entity.FabricCAUser;
@@ -31,7 +33,8 @@ public class FabricCAUserService {
     private  Wallet wallet;
     private  String adminUserId;
     private  String adminUserPassword;
-
+    @Autowired
+    PasswordEncoder passwordEncoder;
     public FabricCAUserService(HFCAClient hfcaClient, Wallet wallet, String adminUserId, String adminUserPassword) {
         this.hfcaClient = hfcaClient;
         this.wallet = wallet;
@@ -129,7 +132,7 @@ public class FabricCAUserService {
         registrationRequest.setAffiliation(admin.getAffiliation());
         registrationRequest.setEnrollmentID(userId);
         registrationRequest.getAttributes().add(new Attribute ("role",role));
-        registrationRequest.setSecret(secret);
+        registrationRequest.setSecret(passwordEncoder.encode(secret));
         
          
         String enrollmentSecret = hfcaClient.register(registrationRequest, admin);
