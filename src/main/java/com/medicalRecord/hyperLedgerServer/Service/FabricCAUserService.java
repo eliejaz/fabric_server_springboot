@@ -17,7 +17,6 @@ import org.hyperledger.fabric_ca.sdk.exception.IdentityException;
 import org.hyperledger.fabric_ca.sdk.exception.InvalidArgumentException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
 import com.medicalRecord.hyperLedgerServer.Entity.FabricCAUser;
 
@@ -26,7 +25,6 @@ import java.security.cert.CertificateException;
 import java.util.Collection;
 
 @Slf4j
-
 public class FabricCAUserService {
 
     private  HFCAClient hfcaClient;

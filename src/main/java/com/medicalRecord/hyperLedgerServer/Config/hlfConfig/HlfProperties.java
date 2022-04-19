@@ -1,4 +1,4 @@
-package com.medicalRecord.hyperLedgerServer.Config;
+package com.medicalRecord.hyperLedgerServer.Config.hlfConfig;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.core.io.Resource;

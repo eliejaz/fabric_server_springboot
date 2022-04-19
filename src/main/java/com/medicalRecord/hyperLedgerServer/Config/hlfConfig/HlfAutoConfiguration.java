@@ -1,4 +1,4 @@
-package com.medicalRecord.hyperLedgerServer.Config;
+package com.medicalRecord.hyperLedgerServer.Config.hlfConfig;
 
 import com.medicalRecord.hyperLedgerServer.Entity.FabricCAUser;
 import com.medicalRecord.hyperLedgerServer.Service.FabricCAUserService;

@@ -1,4 +1,4 @@
-package com.medicalRecord.hyperLedgerServer.Config;
+package com.medicalRecord.hyperLedgerServer.Config.hlfConfig;
 
 import org.hyperledger.fabric.sdk.NetworkConfig;
 import org.hyperledger.fabric.sdk.NetworkConfig.CAInfo;

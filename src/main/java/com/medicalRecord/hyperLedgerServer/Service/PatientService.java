@@ -18,7 +18,7 @@ import com.medicalRecord.hyperLedgerServer.Util.TransactionUtil;
 @Service
 public class PatientService {
 
-	
+	@Autowired
 	private Contract contract;
 
 	private ObjectMapper mapper = new ObjectMapper();
@@ -50,6 +50,23 @@ public class PatientService {
 		return patients;
 
 	}
+	public List<Patient> getAllByName() {
+
+		List<Patient> patients = null;
+		byte[] data;
+		try {
+			data = contract.submitTransaction(TransactionUtil.ReadAllPatientsByName);
+			patients = mapper.readValue(data, new TypeReference<List<Patient>>() {
+			});
+
+		} catch (ContractException | TimeoutException | InterruptedException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return patients;
+
+	}
+
 
 	public Patient getById(String id) {
  
