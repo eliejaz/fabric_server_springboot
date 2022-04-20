@@ -1,11 +1,13 @@
 package com.medicalRecord.hyperLedgerServer.Entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Data;
 
 @Data
 public class Patient {
 
-	String ID;
+	String id;
 	String firstName ;
 	String last_name ;
 	String email ;
@@ -13,6 +15,7 @@ public class Patient {
 	String groupType ;
 	String []allergies;
 	String emergencyContact ;
-	Diagnosis[] diagnosis ;
-	String [] doctorsId ;
+	Diagnosis []diagnosis ;
+	@JsonProperty("doctorsID")
+	String []doctorsId ;
 }
