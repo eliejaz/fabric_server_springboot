@@ -13,6 +13,6 @@ public class Patient {
 	String groupType ;
 	String []allergies;
 	String emergencyContact ;
-	Diagnosis diagnosis ;
+	Diagnosis[] diagnosis ;
 	String [] doctorsId ;
 }

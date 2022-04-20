@@ -9,7 +9,7 @@ final class HlfGatewayService {
         if (!fabricCAUserService.userExist(fabricCAUser.getName())) {
             fabricCAUserService.enrollAdmin(fabricCAUser.getMspId());
             fabricCAUserService.registerAndEnrollUser(fabricCAUser.getMspId(),
-                    fabricCAUser.getName(), fabricCAUser.getAffiliation());
+                    fabricCAUser.getName(), fabricCAUser.getAffiliation(),"doctor","pass1");
         }
     }
 }

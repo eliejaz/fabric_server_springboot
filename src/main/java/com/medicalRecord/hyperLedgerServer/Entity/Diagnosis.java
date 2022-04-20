@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class Diagnosis {
 
-	String ID ;
+	String id ;
 	String description ;
 	String illness ;
 	Prescription []prescriptions ;
