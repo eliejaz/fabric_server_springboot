@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.exc.StreamReadException;
+import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.medicalRecord.hyperLedgerServer.Entity.Patient;
@@ -23,88 +25,61 @@ public class PatientService {
 
 	private ObjectMapper mapper = new ObjectMapper();
 
-	public void delete(String id) {
-	
-			try {
-				contract.submitTransaction(TransactionUtil.DeletePatient, id);
-			} catch (ContractException | TimeoutException | InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+	public void delete(String id) throws ContractException, TimeoutException, InterruptedException {
+
+		contract.submitTransaction(TransactionUtil.DeletePatient, id);
 
 	}
 
-	public List<Patient> getAll() {
+	public List<Patient> getAll() throws ContractException, TimeoutException, InterruptedException, StreamReadException,
+			DatabindException, IOException {
 
 		List<Patient> patients = null;
 		byte[] data;
-		try {
-			data = contract.submitTransaction(TransactionUtil.GetAllPatients);
-			patients = mapper.readValue(data, new TypeReference<List<Patient>>() {
-			});
 
-		} catch (ContractException | TimeoutException | InterruptedException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return patients;
+		data = contract.submitTransaction(TransactionUtil.GetAllPatients);
+		patients = mapper.readValue(data, new TypeReference<List<Patient>>() {
+		});
 
-	}
-	public List<Patient> getAllByName() {
-
-		List<Patient> patients = null;
-		byte[] data;
-		try {
-			data = contract.submitTransaction(TransactionUtil.ReadAllPatientsByName);
-			patients = mapper.readValue(data, new TypeReference<List<Patient>>() {
-			});
-
-		} catch (ContractException | TimeoutException | InterruptedException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		return patients;
 
 	}
 
+	public List<Patient> getAllByName() throws ContractException, TimeoutException, InterruptedException,
+			StreamReadException, DatabindException, IOException {
 
-	public Patient getById(String id) {
- 
+		List<Patient> patients = null;
 		byte[] data;
-		try {
-			data = contract.submitTransaction(TransactionUtil.ReadPatientById, id);
-			//list.add(mapper.readValue(data, Patient.class));
-			return mapper.readValue(data, Patient.class);
 
-		} catch (ContractException | TimeoutException | InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		data = contract.submitTransaction(TransactionUtil.ReadAllPatientsByName);
+		patients = mapper.readValue(data, new TypeReference<List<Patient>>() {
+		});
 
-		return null;
-	}
-
-	public void save(Patient patient) {
-		try {
-			contract.submitTransaction(TransactionUtil.CreatePatient, mapper.writeValueAsString(patient));
-		} catch (JsonProcessingException | ContractException | TimeoutException | InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		return patients;
 
 	}
 
-	public void update(Patient patient) {
+	public Patient getById(String id) throws ContractException, TimeoutException, InterruptedException,
+			StreamReadException, DatabindException, IOException {
 
-		try {
-			contract.submitTransaction(TransactionUtil.UpdatePatient, mapper.writeValueAsString(patient));
-		} catch (JsonProcessingException | ContractException | TimeoutException | InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		byte[] data;
+
+		data = contract.submitTransaction(TransactionUtil.ReadPatientById, id);
+		// list.add(mapper.readValue(data, Patient.class));
+
+		return mapper.readValue(data, Patient.class);
+
+	}
+
+	public void save(Patient patient)
+			throws JsonProcessingException, ContractException, TimeoutException, InterruptedException {
+		contract.submitTransaction(TransactionUtil.CreatePatient, mapper.writeValueAsString(patient));
+
+	}
+
+	public void update(Patient patient)
+			throws JsonProcessingException, ContractException, TimeoutException, InterruptedException {
+		contract.submitTransaction(TransactionUtil.UpdatePatient, mapper.writeValueAsString(patient));
 
 	}
 }

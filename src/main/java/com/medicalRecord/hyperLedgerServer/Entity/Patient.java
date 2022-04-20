@@ -7,12 +7,12 @@ public class Patient {
 
 	String ID;
 	String firstName ;
-	String lastName ;
+	String last_name ;
 	String email ;
 	String description ;
 	String groupType ;
 	String []allergies;
-	String emergency_contact ;
+	String emergencyContact ;
 	Diagnosis diagnosis ;
-	String [] doctors ;
+	String [] doctorsId ;
 }

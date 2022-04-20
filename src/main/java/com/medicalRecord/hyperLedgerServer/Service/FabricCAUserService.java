@@ -140,16 +140,12 @@ public class FabricCAUserService {
         //hfcaClient.
     }
     
-    public Collection<HFCAIdentity> getAllIdentities(FabricCAUser admin)
+    public Collection<HFCAIdentity> getAllIdentities(FabricCAUser admin) throws IdentityException, InvalidArgumentException
     {
-        try {
+    
         	return  hfcaClient.getHFCAIdentities(admin);
-			
-		} catch (IdentityException | InvalidArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        return null;
+ 
+ 
 
     }
     

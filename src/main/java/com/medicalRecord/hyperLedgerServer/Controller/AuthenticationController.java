@@ -47,14 +47,11 @@ public class AuthenticationController {
 	}
 	
 	@GetMapping("/sign_up")
-	public ResponseEntity<?> signUp (@RequestBody Identity identity)
+	public ResponseEntity<?> signUp (@RequestBody Identity identity) throws Exception
 	{
-		try {
-			fabricCAUserService.registerAndEnrollUser(identity.getOrg(), identity.getUserId(), "",identity.getRole(),identity.getPassword());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return ResponseEntity.ok("TEST!");
+	 
+		fabricCAUserService.registerAndEnrollUser(identity.getOrg(), identity.getUserId(), "",identity.getRole(),identity.getPassword());
+ 
+		return ResponseEntity.ok("Registered and Enrolled !");
 	}
 }

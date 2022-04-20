@@ -6,6 +6,6 @@ import lombok.Data;
 public class Prescription {
 
 	String iD ;
-	String medication_name ;
+	String medicationName ;
 	Double quantity ;
 }
