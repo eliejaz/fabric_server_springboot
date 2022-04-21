@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,11 +47,19 @@ public class AuthenticationController {
 		return ResponseEntity.ok(token);
 	}
 	
-	@GetMapping("/sign_up")
+	@PostMapping("/sign_up")
 	public ResponseEntity<?> signUp (@RequestBody Identity identity) throws Exception
 	{
 	 
 		fabricCAUserService.registerAndEnrollUser(identity.getOrg(), identity.getUserId(), "",identity.getRole(),identity.getPassword());
+ 
+		return ResponseEntity.ok("Registered and Enrolled !");
+	}
+	@GetMapping("/enrolAdmin")
+	public ResponseEntity<?> enrolAdmin () throws Exception
+	{
+	 
+		fabricCAUserService.enrollAdmin("Hosp1MSPc");
  
 		return ResponseEntity.ok("Registered and Enrolled !");
 	}

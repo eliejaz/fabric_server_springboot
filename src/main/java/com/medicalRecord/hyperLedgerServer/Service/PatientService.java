@@ -82,7 +82,7 @@ public class PatientService {
 
 	public void save(Patient patient, String userId) throws Exception {
 		String uuid="patient"+UUID.randomUUID().toString()+"_user"+userId;
-		patient.setID(uuid);
+		patient.setId(uuid);
 		Contract contract = gatewayService.contract(userId);
 		contract.submitTransaction(TransactionUtil.CreatePatient, mapper.writeValueAsString(patient));
 

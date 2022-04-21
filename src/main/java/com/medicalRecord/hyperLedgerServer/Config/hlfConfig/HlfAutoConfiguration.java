@@ -1,11 +1,11 @@
 package com.medicalRecord.hyperLedgerServer.Config.hlfConfig;
 
-import com.medicalRecord.hyperLedgerServer.Entity.FabricCAUser;
+//import com.medicalRecord.hyperLedgerServer.Entity.FabricCAUser;
 import com.medicalRecord.hyperLedgerServer.Service.FabricCAUserService;
 
-import org.hyperledger.fabric.gateway.Gateway;
-import org.hyperledger.fabric.gateway.Contract;
-import org.hyperledger.fabric.gateway.Network;
+//import org.hyperledger.fabric.gateway.Gateway;
+//import org.hyperledger.fabric.gateway.Contract;
+//import org.hyperledger.fabric.gateway.Network;
 import org.hyperledger.fabric.gateway.Wallet;
 import org.hyperledger.fabric.gateway.Wallets;
 import org.hyperledger.fabric.sdk.NetworkConfig.CAInfo;
@@ -83,44 +83,44 @@ public class HlfAutoConfiguration {
 
     }
 
-    @Configuration(proxyBeanMethods = false)
-    @EnableConfigurationProperties({HlfGatewayProperties.class, HlfProperties.class})
-    static class HlfGatewayConfiguration {
-
-        @Bean
-        @ConditionalOnProperty(prefix = "hyperledger-fabric", name = {"network-config", "gateway.ca-user.user-id"})
-        @ConditionalOnMissingBean(Gateway.class)
-        public Gateway gateway(HlfGatewayProperties hlfGatewayProperties, HlfProperties hlfProperties,
-                               Wallet wallet, FabricCAUserService fabricCAUserService) throws Exception {
-            if (hlfGatewayProperties.getCaUser().isRegistrationEnabled()) {
-                FabricCAUser user = FabricCAUser.builder()
-                        .orgMSP(hlfGatewayProperties.getCaUser().getOrgMsp())
-                        .userId(hlfGatewayProperties.getCaUser().getUserId())
-                        .affiliation(hlfGatewayProperties.getCaUser().getAffiliation())
-                        .build();
-                HlfGatewayService.registerFabricCAUserIfNotExists(fabricCAUserService, user);
-            }
-            Gateway.Builder builder = Gateway.createBuilder();
-            builder
-                    .discovery(hlfGatewayProperties.isDiscovery())
-                    .networkConfig(hlfProperties.getNetworkConfig().getInputStream())
-                    .identity(wallet, hlfGatewayProperties.getCaUser().getUserId());
-            return builder.connect();
-        }
-
-        @Bean
-        @ConditionalOnProperty(prefix = "hyperledger-fabric.gateway", name = "channel-name")
-        @ConditionalOnMissingBean(Network.class)
-        public Network network(HlfGatewayProperties hlfGatewayProperties, Gateway gateway) {
-            return gateway.getNetwork(hlfGatewayProperties.getChannelName());
-        }
-
-        @Bean
-        @ConditionalOnProperty(prefix = "hyperledger-fabric.gateway", name = {"chaincode-name"})
-        @ConditionalOnMissingBean(Contract.class)
-        public Contract contract(HlfGatewayProperties hlfGatewayProperties, Network network) {
-            return network.getContract(hlfGatewayProperties.getChaincodeName());
-        }
-
-    }
+//    @Configuration(proxyBeanMethods = false)
+//    @EnableConfigurationProperties({HlfGatewayProperties.class, HlfProperties.class})
+//    static class HlfGatewayConfiguration {
+//
+//        @Bean
+//        @ConditionalOnProperty(prefix = "hyperledger-fabric", name = {"network-config", "gateway.ca-user.user-id"})
+//        @ConditionalOnMissingBean(Gateway.class)
+//        public Gateway gateway(HlfGatewayProperties hlfGatewayProperties, HlfProperties hlfProperties,
+//                               Wallet wallet, FabricCAUserService fabricCAUserService) throws Exception {
+//            if (hlfGatewayProperties.getCaUser().isRegistrationEnabled()) {
+//                FabricCAUser user = FabricCAUser.builder()
+//                        .orgMSP(hlfGatewayProperties.getCaUser().getOrgMsp())
+//                        .userId(hlfGatewayProperties.getCaUser().getUserId())
+//                        .affiliation(hlfGatewayProperties.getCaUser().getAffiliation())
+//                        .build();
+//                HlfGatewayService.registerFabricCAUserIfNotExists(fabricCAUserService, user);
+//            }
+//            Gateway.Builder builder = Gateway.createBuilder();
+//            builder
+//                    .discovery(hlfGatewayProperties.isDiscovery())
+//                    .networkConfig(hlfProperties.getNetworkConfig().getInputStream())
+//                    .identity(wallet, hlfGatewayProperties.getCaUser().getUserId());
+//            return builder.connect();
+//        }
+//
+//        @Bean
+//        @ConditionalOnProperty(prefix = "hyperledger-fabric.gateway", name = "channel-name")
+//        @ConditionalOnMissingBean(Network.class)
+//        public Network network(HlfGatewayProperties hlfGatewayProperties, Gateway gateway) {
+//            return gateway.getNetwork(hlfGatewayProperties.getChannelName());
+//        }
+//
+//        @Bean
+//        @ConditionalOnProperty(prefix = "hyperledger-fabric.gateway", name = {"chaincode-name"})
+//        @ConditionalOnMissingBean(Contract.class)
+//        public Contract contract(HlfGatewayProperties hlfGatewayProperties, Network network) {
+//            return network.getContract(hlfGatewayProperties.getChaincodeName());
+//        }
+//
+//    }
 }
