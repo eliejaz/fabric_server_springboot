@@ -22,7 +22,7 @@ public class PatientService {
 	@Autowired
 	GatewayService gatewayService;
 
-	private ObjectMapper mapper = new ObjectMapper();
+	private final ObjectMapper mapper = new ObjectMapper();
 
 	public void delete(String id, String userId) throws Exception {
 		Contract contract = gatewayService.contract(userId);
