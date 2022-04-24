@@ -28,7 +28,7 @@ public class AuthenticationController {
 	JwtUtils jwtUtils;
 	@Autowired
 	private  FabricCAUserService fabricCAUserService;
-	@GetMapping("/log_in")
+	@PostMapping("/log_in")
 	public ResponseEntity<?> login (@RequestBody Identity identity)
 	{
 		Authentication authentication = authenticationManager

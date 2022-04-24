@@ -11,7 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
- 
+
 public class UserDetailsImpl implements UserDetails {
 	private static final long serialVersionUID = 1L;
 
@@ -19,11 +19,15 @@ public class UserDetailsImpl implements UserDetails {
 //		List<GrantedAuthority> authorities = user.getAttributes().stream()
 //				.map(role -> new SimpleGrantedAuthority(role)).collect(Collectors.toList());
 
-		Collection<GrantedAuthority> authorities =  new ArrayList<>();
-		for (Attribute attr :user.getAttributes())
-			if (attr.getName().equals("role")) authorities.add(new SimpleGrantedAuthority(attr.getValue()));
-		
-			return new UserDetailsImpl(user.getEnrollmentId(), username, user.getSecret(), authorities);
+		Collection<GrantedAuthority> authorities = new ArrayList<>();
+		String password = "";
+		for (Attribute attr : user.getAttributes()) {
+			if (attr.getName().equals("role"))
+				authorities.add(new SimpleGrantedAuthority(attr.getValue()));
+			if (attr.getName().equals("login_pass"))
+				password = attr.getValue();
+		}
+		return new UserDetailsImpl(user.getEnrollmentId(), username, password, authorities);
 	}
 
 	private String id;

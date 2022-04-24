@@ -31,6 +31,7 @@ public class ResponseExceptionHandler {
 	@ExceptionHandler(value = { NoSuchElementException.class })
 	@ResponseBody
 	protected ResponseEntity<?> handleConflict(RuntimeException ex, WebRequest request) {
+		ex.printStackTrace();
 		log.error(ex.getMessage());
 		return ResponseEntity.badRequest().body("RuntimeException :"+ex.getMessage());
 
@@ -39,14 +40,14 @@ public class ResponseExceptionHandler {
 	@ExceptionHandler(value = { IdentityException.class  })
 	@ResponseBody
 	protected ResponseEntity<?> handleIdentityException(IdentityException ex, WebRequest request) {
- 
+		ex.printStackTrace();
 		log.error(ex.getMessage());
 		return ResponseEntity.badRequest().body("IdentityException :"+ex.getMessage());
 	}
 	@ExceptionHandler(value = { ContractException.class  })
 	@ResponseBody
 	protected ResponseEntity<?> handleContractException(ContractException ex, WebRequest request) {
- 
+		ex.printStackTrace();
 		log.error(ex.getMessage());
 		return ResponseEntity.badRequest().body("ContractException :"+ex.getMessage());
 	}
@@ -54,14 +55,14 @@ public class ResponseExceptionHandler {
 	@ExceptionHandler(value = { TimeoutException.class   })
 	@ResponseBody
 	protected ResponseEntity<?> handleTimeOutExeption(TimeoutException ex, WebRequest request) {
- 
+		ex.printStackTrace();
 		log.error(ex.getMessage());
 		return ResponseEntity.badRequest().body("TimeoutException :"+ex.getMessage());
 	}
 	@ExceptionHandler(value = { InterruptedException.class   })
 	@ResponseBody
 	protected ResponseEntity<?> handleInterruptedException(InterruptedException ex, WebRequest request) {
- 
+		ex.printStackTrace();
 		log.error(ex.getMessage());
 		return ResponseEntity.badRequest().body("InterruptedException :"+ex.getMessage());
 	}
@@ -69,7 +70,7 @@ public class ResponseExceptionHandler {
 	@ExceptionHandler(value = { Exception.class, IllegalArgumentException.class, IllegalStateException.class })
 	@ResponseBody
 	protected ResponseEntity<?> handleAllConflict(Exception ex, WebRequest request) {
- 
+		ex.printStackTrace();
 		log.error(ex.getMessage());
 		return ResponseEntity.badRequest().body("Exception :"+ex.getMessage());
 	}

@@ -126,9 +126,12 @@ public class FabricCAUserService {
 		registrationRequest.setAffiliation(admin.getAffiliation());
 		registrationRequest.setEnrollmentID(userId);
 		registrationRequest.getAttributes().add(new Attribute("role", role));
-		registrationRequest.setSecret(passwordEncoder.encode(secret));
-
+		registrationRequest.getAttributes().add(new Attribute("login_pass", passwordEncoder.encode(secret)));
+		//registrationRequest.setSecret(passwordEncoder.encode(secret));
+		 
 		String enrollmentSecret = hfcaClient.register(registrationRequest, admin);
+		
+		log.warn("ENROLED USER WITH SECRET  : " +  secret + " enrolement sec :" +enrollmentSecret);
 		return hfcaClient.enroll(userId, enrollmentSecret);
 
 		// hfcaClient.
@@ -137,6 +140,24 @@ public class FabricCAUserService {
 	public Collection<HFCAIdentity> getAllIdentities(FabricCAUser admin)
 			throws IdentityException, InvalidArgumentException {
 		return hfcaClient.getHFCAIdentities(admin);
+	}
+	
+	public HFCAIdentity getIdentity(String username)
+			throws IdentityException, InvalidArgumentException, IOException {
+		
+		X509Identity adminIdentity = (X509Identity) wallet.get(adminUserId);
+		if (adminIdentity == null) {
+			log.warn(String.format("\"%s\" needs to be enrolled and added to the wallet first", adminUserId));
+			return null;
+		}
+		FabricCAUser admin = FabricCAUser.builder().userId(adminUserId).orgMSP("Hosp1MSP").affiliation("")
+				.identity(adminIdentity).build();
+		Collection<HFCAIdentity> identities= hfcaClient.getHFCAIdentities(admin);
+		
+		for (HFCAIdentity id : identities)
+			if (id.getEnrollmentId().equals(username))return id;
+		
+		return null;
 	}
 
 }

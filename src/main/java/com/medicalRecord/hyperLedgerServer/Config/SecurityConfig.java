@@ -32,7 +32,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			"/v2/api-docs/**", "/v2/api-docs", "/swagger-resources", "/swagger-resources/**", "/configuration/**",
 			"/swagger-ui.html", "/swagger-ui.html/**", "/webjars/**", "/favicon.ico",
 			// -- Swagger UI v3 (OpenAPI)
-			"/swagger-ui-custom.html", "/v3/api-docs/**", "/v3/api-docs", "/swagger-ui/**", "/api/swagger-ui.html" };
+			"/swagger-ui-custom.html", "/v3/api-docs/**", "/v3/api-docs", "/swagger-ui/**", "/api/swagger-ui.html",
+			"/api/auth/**"};
 
 	@Autowired
 	UserDetailsServiceImpl userDetailsService;
@@ -65,7 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers(AUTH_WHITELIST).permitAll()
 				//.antMatchers("").hasIpAddress()
 				//.anyRequest().authenticated();
-				.anyRequest().permitAll();
+				.anyRequest().authenticated();
 
 	    http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
