@@ -8,4 +8,6 @@ public class Diagnosis {
     String description;
     String illness;
     Prescription[] prescriptions;
+    
+    //add doctor
 }

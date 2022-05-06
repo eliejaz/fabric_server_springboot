@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -48,21 +49,21 @@ public class PatientController {
 		return ResponseEntity.ok().build();
 	}
 
-	@GetMapping("/patients")
+	@GetMapping(value = "/patients" ,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getPatients( Principal user) throws Exception {
 		log.warn("USER : " + user.getName());
 		List<Patient> patients = patientService.getAll(user.getName());
 		return ResponseEntity.ok(patients);
 	}
 
-	@GetMapping("/patient_prescription")
+	@GetMapping(value = "/patient_prescription" ,produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getPatientPrescription(String patient_id,  Principal user)
 			throws Exception {
 		List<Prescription> prescription = patientService.getAllPatientPrescription(patient_id, user.getName());
 		return ResponseEntity.ok(prescription);
 	}
 
-	@GetMapping("/patient")
+	@GetMapping(value = "/patient",produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getPatient(@RequestBody String patient_id,  Principal user)
 			throws Exception {
 		Patient patient = patientService.getById(patient_id, user.getName());

@@ -16,6 +16,6 @@ public class Patient {
 	String []allergies;
 	String emergencyContact ;
 	Diagnosis []diagnosis ;
-	@JsonProperty("doctorsID")
+	@JsonProperty("doctorsId")
 	String []doctorsId ;
 }
