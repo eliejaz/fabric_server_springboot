@@ -61,7 +61,7 @@ public class PatientService {
 		List<Prescription> prescription = null;
 		byte[] data;
 
-		data = contract.submitTransaction(TransactionUtil.ReadPatientPerscriptions);
+		data = contract.submitTransaction(TransactionUtil.ReadPatientPerscriptions,patientId);
 		prescription = mapper.readValue(data, new TypeReference<List<Prescription>>() {
 		});
 
