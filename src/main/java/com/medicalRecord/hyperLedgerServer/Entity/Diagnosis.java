@@ -4,10 +4,10 @@ import lombok.Data;
 
 @Data
 public class Diagnosis {
-    String id;
-    String description;
-    String illness;
-    Prescription[] prescriptions;
+	private String id;
+	private String description;
+	private String illness;
+	private Prescription[] prescriptions;
     
     //add doctor
 }

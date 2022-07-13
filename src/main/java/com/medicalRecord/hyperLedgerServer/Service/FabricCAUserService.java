@@ -125,8 +125,10 @@ public class FabricCAUserService {
 		RegistrationRequest registrationRequest = new RegistrationRequest(userId);
 		registrationRequest.setAffiliation(admin.getAffiliation());
 		registrationRequest.setEnrollmentID(userId);
-		registrationRequest.getAttributes().add(new Attribute("role", role));
-		registrationRequest.getAttributes().add(new Attribute("login_pass", passwordEncoder.encode(secret)));
+		registrationRequest.getAttributes().add(new Attribute("role", role,true));
+		registrationRequest.getAttributes().add(new Attribute("login_pass", passwordEncoder.encode(secret),true));
+		registrationRequest.getAttributes().add(new Attribute("user", userId,true));
+
 		//registrationRequest.setSecret(passwordEncoder.encode(secret));
 		 
 		String enrollmentSecret = hfcaClient.register(registrationRequest, admin);
@@ -156,6 +158,7 @@ public class FabricCAUserService {
 		
 		for (HFCAIdentity id : identities)
 			if (id.getEnrollmentId().equals(username))return id;
+	
 		
 		return null;
 	}

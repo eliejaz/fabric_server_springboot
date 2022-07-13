@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 public class PatientController {
 	@Autowired
 	PatientService patientService;
-
+	
 	@PostMapping("/patient")
 	public ResponseEntity<?> createPatient(@RequestBody Patient patient,  Principal user)
 			throws Exception {

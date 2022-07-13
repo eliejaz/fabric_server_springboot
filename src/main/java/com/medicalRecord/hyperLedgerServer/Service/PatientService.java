@@ -1,5 +1,6 @@
 package com.medicalRecord.hyperLedgerServer.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,11 +17,9 @@ import com.medicalRecord.hyperLedgerServer.Util.TransactionUtil;
 @Service
 public class PatientService {
 
-//	@Autowired
-//	private Contract contract;
-
 	@Autowired
 	GatewayService gatewayService;
+	private final List<String> bloodTypes =Arrays.asList("A+","B+","A-","B-","AB+","AB-","O+","O-");
 
 	private final ObjectMapper mapper = new ObjectMapper();
 
@@ -81,8 +80,11 @@ public class PatientService {
 	}
 
 	public void save(Patient patient, String userId) throws Exception {
+		if (!bloodTypes.contains(patient.getGroupType()))
+				throw new RuntimeException("wrong blood type");
 		String uuid="patient"+UUID.randomUUID().toString()+"_user"+userId;
 		patient.setId(uuid);
+		patient.getDoctorsId().add(userId);
 		Contract contract = gatewayService.contract(userId);
 		contract.submitTransaction(TransactionUtil.CreatePatient, mapper.writeValueAsString(patient));
 

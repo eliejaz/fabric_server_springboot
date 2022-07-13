@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.medicalRecord.hyperLedgerServer.DTO.LoginUser;
 import com.medicalRecord.hyperLedgerServer.Entity.Identity;
 import com.medicalRecord.hyperLedgerServer.Security.JwtUtils;
 import com.medicalRecord.hyperLedgerServer.Service.FabricCAUserService;
@@ -29,20 +30,16 @@ public class AuthenticationController {
 	@Autowired
 	private  FabricCAUserService fabricCAUserService;
 	@PostMapping("/log_in")
-	public ResponseEntity<?> login (@RequestBody Identity identity)
+	public ResponseEntity<?> login (@RequestBody LoginUser identity)
 	{
 		Authentication authentication = authenticationManager
-				.authenticate(new UsernamePasswordAuthenticationToken(identity.getUserId(), identity.getPassword()));
+				.authenticate(new UsernamePasswordAuthenticationToken(identity.getUsername(), identity.getPassword()));
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-		// UserDetailsImpl userDetails ;
-	 
+
 		 authentication.getPrincipal();
 		
 		String token = jwtUtils.generateJwtToken(authentication);
-//	    List<String> roles = userDetails.getAuthorities().stream()
-//        .map(item -> item.getAuthority())
-//        .collect(Collectors.toList());
 
 		return ResponseEntity.ok(token);
 	}
@@ -59,7 +56,7 @@ public class AuthenticationController {
 	public ResponseEntity<?> enrolAdmin () throws Exception
 	{
 	 
-		fabricCAUserService.enrollAdmin("Hosp1MSPc");
+		fabricCAUserService.enrollAdmin("Hosp1MSP");
  
 		return ResponseEntity.ok("Registered and Enrolled !");
 	}

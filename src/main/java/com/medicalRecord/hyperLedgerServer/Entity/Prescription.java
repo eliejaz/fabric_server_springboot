@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class Prescription {
-	String id;
-	String medicationName ;
-	String quantity ;
+	private String id;
+	private String medicationName ;
+	private String quantity ;
 }
