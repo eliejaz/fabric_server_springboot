@@ -127,7 +127,7 @@ public class FabricCAUserService {
 		registrationRequest.setEnrollmentID(userId);
 		registrationRequest.getAttributes().add(new Attribute("role", role,true));
 		registrationRequest.getAttributes().add(new Attribute("login_pass", passwordEncoder.encode(secret),true));
-		registrationRequest.getAttributes().add(new Attribute("user", userId,true));
+		registrationRequest.getAttributes().add(new Attribute("userId", userId,true));
 
 		//registrationRequest.setSecret(passwordEncoder.encode(secret));
 		 

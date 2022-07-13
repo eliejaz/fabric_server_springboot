@@ -91,6 +91,8 @@ public class PatientService {
 	}
 
 	public void update(Patient patient, String userId) throws Exception {
+		if (!bloodTypes.contains(patient.getGroupType()))
+			throw new RuntimeException("wrong blood type");
 		Contract contract = gatewayService.contract(userId);
 		contract.submitTransaction(TransactionUtil.UpdatePatient, mapper.writeValueAsString(patient));
 
