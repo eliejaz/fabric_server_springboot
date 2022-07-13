@@ -1,9 +1,10 @@
 package com.medicalRecord.hyperLedgerServer.Entity;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -23,8 +24,9 @@ public class Patient {
 	private String groupType ;
 	private Set<String>allergies= new HashSet<>() ;
 	private String emergencyContact ;
-	@JsonProperty(access = Access.READ_ONLY)
-	private Diagnosis []diagnosis ;
+	private List<String>Diagnosis =new ArrayList<>() ;
 	@Schema(description = "If kept empty will automatically add creator doctor.", required = true) 
 	private Set<String>doctorsId = new HashSet<>() ;
+	
+	private String inpatient;
 }
