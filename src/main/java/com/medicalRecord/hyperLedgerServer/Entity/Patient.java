@@ -23,7 +23,7 @@ public class Patient {
 	private String groupType ;
 	private Set<String>allergies= new HashSet<>() ;
 	private String emergencyContact ;
-	@JsonIgnore
+	@JsonProperty(access = Access.READ_ONLY)
 	private Diagnosis []diagnosis ;
 	@Schema(description = "If kept empty will automatically add creator doctor.", required = true) 
 	private Set<String>doctorsId = new HashSet<>() ;
