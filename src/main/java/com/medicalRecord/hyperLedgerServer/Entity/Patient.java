@@ -5,16 +5,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
 public class Patient {
 
-	@JsonProperty(access = Access.READ_ONLY)
 	private String id;
 	private String firstName ;
 	private String last_name ;

@@ -80,8 +80,8 @@ public class PatientService {
 	}
 
 	public void save(Patient patient, String userId) throws Exception {
-		if (!bloodTypes.contains(patient.getGroupType()))
-				throw new RuntimeException("wrong blood type");
+		validateBloodType(patient.getGroupType());
+		
 		String uuid="patient"+UUID.randomUUID().toString()+"_user"+userId;
 		patient.setId(uuid);
 		patient.getDoctorsId().add(userId);
@@ -91,11 +91,14 @@ public class PatientService {
 	}
 
 	public void update(Patient patient, String userId) throws Exception {
-		if (!bloodTypes.contains(patient.getGroupType()))
-			throw new RuntimeException("wrong blood type");
+		validateBloodType(patient.getGroupType());
 		Contract contract = gatewayService.contract(userId);
 		contract.submitTransaction(TransactionUtil.UpdatePatient, mapper.writeValueAsString(patient));
 
+	}
+	private void validateBloodType(String group) {
+		if (!bloodTypes.contains(group))
+			throw new RuntimeException("wrong blood type");
 	}
 	
 	
