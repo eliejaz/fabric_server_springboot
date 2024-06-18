@@ -2,20 +2,17 @@
 
 ## Overview
 
-This project is a Spring Boot application designed to interact with Hyperledger Fabric, a blockchain framework implementation. It provides RESTful APIs to facilitate blockchain operations such as invoking chaincode and querying the ledger.
-
+This project is a Spring Boot application designed to interact with Hyperledger Fabric in the context of medical facilities. It provides RESTful APIs to facilitate blockchain operations. The server is secured via JWT authentication and role-based APIs.
 ## Features
 
 - **Spring Boot Framework**: Utilizes Spring Boot for easy setup and rapid development.
 - **Hyperledger Fabric Integration**: Connects with Hyperledger Fabric to perform blockchain operations.
-- **RESTful APIs**: Exposes endpoints to interact with the blockchain network.
+- **RESTful APIs**: Exposes endpoints to interact with the blockchain network. Available APIs can be seen in the swagger interface.
 
 ## Prerequisites
 
 - Java 11 or higher
 - Maven
-- Docker (for running Hyperledger Fabric)
-
 ## Setup
 
 1. **Clone the repository**
@@ -37,10 +34,6 @@ This project is a Spring Boot application designed to interact with Hyperledger 
    ```sh
    mvn spring-boot:run
    ```
-
-## Usage
-
-### API Endpoints
 
 A swagger interface is available to check all the available APIs.
 
