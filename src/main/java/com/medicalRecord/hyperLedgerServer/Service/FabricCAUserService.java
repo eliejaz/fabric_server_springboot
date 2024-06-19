@@ -27,127 +27,137 @@ import java.util.Collection;
 @Slf4j
 public class FabricCAUserService {
 
-    private  HFCAClient hfcaClient;
-    private  Wallet wallet;
-    private  String adminUserId;
-    private  String adminUserPassword;
-    @Autowired
-    PasswordEncoder passwordEncoder;
-    public FabricCAUserService(HFCAClient hfcaClient, Wallet wallet, String adminUserId, String adminUserPassword) {
-        this.hfcaClient = hfcaClient;
-        this.wallet = wallet;
-        this.adminUserId = adminUserId;
-        this.adminUserPassword = adminUserPassword;
-    }
+	private HFCAClient hfcaClient;
+	private Wallet wallet;
+	private String adminUserId;
+	private String adminUserPassword;
+	@Autowired
+	PasswordEncoder passwordEncoder;
 
-    public FabricCAUserService() {
+	public FabricCAUserService(HFCAClient hfcaClient, Wallet wallet, String adminUserId, String adminUserPassword) {
+		this.hfcaClient = hfcaClient;
+		this.wallet = wallet;
+		this.adminUserId = adminUserId;
+		this.adminUserPassword = adminUserPassword;
+	}
 
-    }
+	public FabricCAUserService() {
 
+	}
 
-    public void enrollAdmin(String orgMspId) throws IOException, InvalidArgumentException,
-            EnrollmentException, CertificateException {
-        if (wallet.get(adminUserId) != null) {
-            log.warn(String.format("An identity for the admin user \"%s\" already exists in the wallet", adminUserId));
-            return;
-        }
-        final EnrollmentRequest enrollmentRequestTLS = new EnrollmentRequest();
-        enrollmentRequestTLS.setProfile("tls");
-        Enrollment enrollment = hfcaClient.enroll(adminUserId, adminUserPassword, enrollmentRequestTLS);
-        Identity identity = Identities.newX509Identity(orgMspId, enrollment);
-        wallet.put(adminUserId, identity);
-        log.info(String.format("Successfully enrolled user \"%s\" and imported it into the wallet", adminUserId));
-    }
-    public void registerAndEnrollUser(String orgMspId, String userId, String affiliation) throws Exception {
-        if (wallet.get(userId) != null) {
-            log.warn(String.format("An identity for the user \"%s\" already exists in the wallet", userId));
-            return;
-        }
-        X509Identity adminIdentity = (X509Identity) wallet.get(adminUserId);
-        if (adminIdentity == null) {
-            log.warn(String.format("\"%s\" needs to be enrolled and added to the wallet first", adminUserId));
-            return;
-        }
-         FabricCAUser admin = FabricCAUser.builder()
-                .userId(adminUserId)
-                .orgMSP(orgMspId)
-                .affiliation(affiliation)
-                .identity(adminIdentity)
-                .build();
-        // Register the user, enroll the user, and import the new identity into the wallet.
-        
-        Enrollment enrollment = getEnrollment(admin, userId);
-        Identity user = Identities.newX509Identity(orgMspId, enrollment);
-         wallet.put(userId, user);
-         
-        log.info(String.format("Successfully enrolled user \"%s\" and imported it into the wallet%n", userId));
-    }
+	public void enrollAdmin(String orgMspId)
+			throws IOException, InvalidArgumentException, EnrollmentException, CertificateException {
+		if (wallet.get(adminUserId) != null) {
+			log.warn(String.format("An identity for the admin user \"%s\" already exists in the wallet", adminUserId));
+			return;
+		}
+		final EnrollmentRequest enrollmentRequestTLS = new EnrollmentRequest();
+		enrollmentRequestTLS.setProfile("tls");
+		Enrollment enrollment = hfcaClient.enroll(adminUserId, adminUserPassword, enrollmentRequestTLS);
+		Identity identity = Identities.newX509Identity(orgMspId, enrollment);
+		wallet.put(adminUserId, identity);
+		log.info(String.format("Successfully enrolled user \"%s\" and imported it into the wallet", adminUserId));
+	}
+//    public void registerAndEnrollUser(String orgMspId, String userId, String affiliation) throws Exception {
+//        if (wallet.get(userId) != null) {
+//            log.warn(String.format("An identity for the user \"%s\" already exists in the wallet", userId));
+//            return;
+//        }
+//        X509Identity adminIdentity = (X509Identity) wallet.get(adminUserId);
+//        if (adminIdentity == null) {
+//            log.warn(String.format("\"%s\" needs to be enrolled and added to the wallet first", adminUserId));
+//            return;
+//        }
+//         FabricCAUser admin = FabricCAUser.builder()
+//                .userId(adminUserId)
+//                .orgMSP(orgMspId)
+//                .affiliation(affiliation)
+//                .identity(adminIdentity)
+//                .build();
+//        // Register the user, enroll the user, and import the new identity into the wallet.
+//        
+//        Enrollment enrollment = getEnrollment(admin, userId);
+//        Identity user = Identities.newX509Identity(orgMspId, enrollment);
+//         wallet.put(userId, user);
+//         
+//        log.info(String.format("Successfully enrolled user \"%s\" and imported it into the wallet%n", userId));
+//    }
 
+	public void registerAndEnrollUser(String orgMspId, String userId, String affiliation, String role, String secret)
+			throws Exception {
+		if (wallet.get(userId) != null) {
+			log.warn(String.format("An identity for the user \"%s\" already exists in the wallet", userId));
+			return;
+		}
+		X509Identity adminIdentity = (X509Identity) wallet.get(adminUserId);
+		if (adminIdentity == null) {
+			log.warn(String.format("\"%s\" needs to be enrolled and added to the wallet first", adminUserId));
+			return;
+		}
+		FabricCAUser admin = FabricCAUser.builder().userId(adminUserId).orgMSP(orgMspId).affiliation(affiliation)
+				.identity(adminIdentity).build();
+		// Register the user, enroll the user, and import the new identity into the
+		// wallet.
 
-    public void registerAndEnrollUser(String orgMspId, String userId, String affiliation ,String role ,String secret) throws Exception {
-        if (wallet.get(userId) != null) {
-            log.warn(String.format("An identity for the user \"%s\" already exists in the wallet", userId));
-            return;
-        }
-        X509Identity adminIdentity = (X509Identity) wallet.get(adminUserId);
-        if (adminIdentity == null) {
-            log.warn(String.format("\"%s\" needs to be enrolled and added to the wallet first", adminUserId));
-            return;
-        }
-         FabricCAUser admin = FabricCAUser.builder()
-                .userId(adminUserId)
-                .orgMSP(orgMspId)
-                .affiliation(affiliation)
-                .identity(adminIdentity)
-                .build();
-        // Register the user, enroll the user, and import the new identity into the wallet.
-        
-        Enrollment enrollment = getEnrollment(admin, userId , role , secret);
-        Identity user = Identities.newX509Identity(orgMspId, enrollment);
-         wallet.put(userId, user);
-         
-        log.info(String.format("Successfully enrolled user \"%s\" and imported it into the wallet%n", userId));
-    }
+		Enrollment enrollment = getEnrollment(admin, userId, role, secret);
+		Identity user = Identities.newX509Identity(orgMspId, enrollment);
+		wallet.put(userId, user);
 
- 
-    public Boolean userExist(String userId) throws IOException {
-        return wallet.get(userId) != null;
-    }
+		log.info(String.format("Successfully enrolled user \"%s\" and imported it into the wallet%n", userId));
+	}
 
-    private Enrollment getEnrollment(FabricCAUser admin, String userId ) throws Exception {
-        RegistrationRequest registrationRequest = new RegistrationRequest(userId);
-        registrationRequest.setAffiliation(admin.getAffiliation());
-        registrationRequest.setEnrollmentID(userId);
-     
-        String enrollmentSecret = hfcaClient.register(registrationRequest, admin);
-        return hfcaClient.enroll(userId, enrollmentSecret);
-    
-        
-        //hfcaClient.
-    }
-    private Enrollment getEnrollment(FabricCAUser admin, String userId ,String role , String secret) throws Exception {
-        RegistrationRequest registrationRequest = new RegistrationRequest(userId);
-        registrationRequest.setAffiliation(admin.getAffiliation());
-        registrationRequest.setEnrollmentID(userId);
-        registrationRequest.getAttributes().add(new Attribute ("role",role));
-        registrationRequest.setSecret(passwordEncoder.encode(secret));
-        
-         
-        String enrollmentSecret = hfcaClient.register(registrationRequest, admin);
-        return hfcaClient.enroll(userId, enrollmentSecret);
-    
-        
-        //hfcaClient.
-    }
-    
-    public Collection<HFCAIdentity> getAllIdentities(FabricCAUser admin) throws IdentityException, InvalidArgumentException
-    {
-    
-        	return  hfcaClient.getHFCAIdentities(admin);
- 
- 
+	public Boolean userExist(String userId) throws IOException {
+		return wallet.get(userId) != null;
+	}
 
-    }
-    
-    
+//    private Enrollment getEnrollment(FabricCAUser admin, String userId ) throws Exception {
+//        RegistrationRequest registrationRequest = new RegistrationRequest(userId);
+//        registrationRequest.setAffiliation(admin.getAffiliation());
+//        registrationRequest.setEnrollmentID(userId);
+//     
+//        String enrollmentSecret = hfcaClient.register(registrationRequest, admin);
+//        return hfcaClient.enroll(userId, enrollmentSecret);
+//    
+//        
+//        //hfcaClient.
+//    }
+	private Enrollment getEnrollment(FabricCAUser admin, String userId, String role, String secret) throws Exception {
+		RegistrationRequest registrationRequest = new RegistrationRequest(userId);
+		registrationRequest.setAffiliation(admin.getAffiliation());
+		registrationRequest.setEnrollmentID(userId);
+		registrationRequest.getAttributes().add(new Attribute("role", role));
+		registrationRequest.getAttributes().add(new Attribute("login_pass", passwordEncoder.encode(secret)));
+		//registrationRequest.setSecret(passwordEncoder.encode(secret));
+		 
+		String enrollmentSecret = hfcaClient.register(registrationRequest, admin);
+		
+		log.warn("ENROLED USER WITH SECRET  : " +  secret + " enrolement sec :" +enrollmentSecret);
+		return hfcaClient.enroll(userId, enrollmentSecret);
+
+		// hfcaClient.
+	}
+
+	public Collection<HFCAIdentity> getAllIdentities(FabricCAUser admin)
+			throws IdentityException, InvalidArgumentException {
+		return hfcaClient.getHFCAIdentities(admin);
+	}
+	
+	public HFCAIdentity getIdentity(String username)
+			throws IdentityException, InvalidArgumentException, IOException {
+		
+		X509Identity adminIdentity = (X509Identity) wallet.get(adminUserId);
+		if (adminIdentity == null) {
+			log.warn(String.format("\"%s\" needs to be enrolled and added to the wallet first", adminUserId));
+			return null;
+		}
+		FabricCAUser admin = FabricCAUser.builder().userId(adminUserId).orgMSP("Hosp1MSP").affiliation("")
+				.identity(adminIdentity).build();
+		Collection<HFCAIdentity> identities= hfcaClient.getHFCAIdentities(admin);
+		
+		for (HFCAIdentity id : identities)
+			if (id.getEnrollmentId().equals(username))return id;
+		
+		return null;
+	}
+
 }
